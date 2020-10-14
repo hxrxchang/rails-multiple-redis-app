@@ -1,24 +1,39 @@
-# README
+# rails-multiple-redis-app
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 環境構築
+### redisを別ポートで２つ起動する
 
-Things you may want to cover:
+```ｓｈ
+$ redis-server --port 6380
+$ redis-server --port 6381
+```
 
-* Ruby version
+### アプリケーション立ち上げ
 
-* System dependencies
+```sh
+$ bundle install --path=vendor/bundle
+$ bundle exec rails s
+```
+- http://localhost:3000 を開く
 
-* Configuration
+### データを挿入
+terminalでpryが開くのでそこで操作。
 
-* Database creation
+```
+redis_a.set("hoge", "hoge")
+redis_b.set("fuga", "fuga")
+```
 
-* Database initialization
+### redis-cliで確認
 
-* How to run the test suite
+```
+$ redis-cli -p 6380
+> get hoge
+"hoge"
+```
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+$ redis-cli -p 6381
+> get fuga
+"fuga"
+```
